@@ -38,46 +38,28 @@ output "security_group_id" {
   value = aws_security_group.default.id
 }
 
-
-variable "name" {
-  description = "The name of the security group"
-  type        = string
-}
- 
-variable "description" {
-  description = "The description of the security group"
-  type        = string
-}
- 
-variable "vpc_id" {
-  description = "The VPC ID where the security group will be created"
-  type        = string
-}
- 
-variable "sg_rules" {
-  description = "A list of security group rules for ingress and egress"
-  type = list(object({
-    type        = string                      # "ingress" or "egress"
-    from_port   = number                      # Port range start
-    to_port     = number                      # Port range end
-    protocol    = string                      # Protocol, e.g., "tcp", "udp", "-1" (for all)
-    cidr_blocks = optional(list(string))      # CIDR blocks (optional)
-    description = optional(string)            # Description of the rule (optional)
-  }))
-  default = []
-}
- 
-variable "tags" {
-  description = "A map of tags to assign to the security group"
-  type        = map(string)
-  default     = {}
-}
-
 variable "vpc_cidr_block" {
   description = "CIDR block for VPC"
   type        = string
   default     = "10.0.0.0/16"
 }
+
+variable "sg_rules" {
+  description = "Security group rules"
+  type = list(object({
+    type        = string
+    from_port   = number
+    to_port     = number
+    protocol    = optional(string, "-1")
+    cidr_blocks = list(string)
+    description = string
+  }))
+  default = []
+}
+
+
+ 
+
 
 
  
